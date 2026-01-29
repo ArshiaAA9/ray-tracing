@@ -1,7 +1,13 @@
 #version 330 core
 out vec4 FragColor;
 
+struct circle {
+        vec2 position;
+        float radius;
+};
+
 uniform vec2 iResolution;
+uniform circle circles[2];
 
 in vec3 fragColor;
 

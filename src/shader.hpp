@@ -3,9 +3,12 @@
 #include <glad/glad.h>
 
 #include <fstream>
+#include <glm/vec2.hpp>
 #include <sstream>
+#include <string>
+#include <vector>
 
-#include "glm/ext/matrix_float4x4.hpp"
+#include "circle.hpp"
 
 class Shader {
 public:
@@ -99,6 +102,17 @@ public:
 
     inline void setMat4(const std::string& name, glm::mat4& mat) const {
         glUniformMatrix4fv(glGetUniformLocation(m_program, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+    }
+
+    inline void setVec2f(const std::string& name, float value1, float value2) const {
+        glUniform2f(glGetUniformLocation(m_program, name.c_str()), value1, value2);
+    }
+
+    inline void setCircles(std::vector<Circle>& circles) {
+        for (size_t i = 0; i < circles.size(); i++) {
+            setVec2f("circles[" + std::to_string(i) + "].position", circles[i].position.x, circles[i].position.y);
+            setFloat("circles[" + std::to_string(i) + "].radius", circles[i].radius);
+        }
     }
 
 private:
