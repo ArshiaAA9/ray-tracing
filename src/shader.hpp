@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "circle.hpp"
+#include "glm/ext/vector_float2.hpp"
 
 class Shader {
 public:
@@ -105,7 +106,13 @@ public:
     }
 
     inline void setVec2f(const std::string& name, float value1, float value2) const {
-        glUniform2f(glGetUniformLocation(m_program, name.c_str()), value1, value2);
+        GLint loc = glGetUniformLocation(m_program, name.c_str());
+        if (loc == -1) {
+            std::cout << "ERROR: Uniform '" << name << "' not found!" << std::endl;
+        } else {
+            std::cout << "Uniform '" << name << "' found at location " << loc << std::endl;
+        }
+        glUniform2f(loc, value1, value2);
     }
 
     inline void setCircles(std::vector<Circle>& circles) {

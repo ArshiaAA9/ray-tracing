@@ -4,7 +4,7 @@
 struct Circle {
 public:
     glm::vec2 position;
-    int radius;
+    float radius;
 
     Circle(float x, float y, float r)
         : position(x, y)

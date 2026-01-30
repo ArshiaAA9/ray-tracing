@@ -1,5 +1,6 @@
 #include <SunnyLog/SunnyLog.h>
 
+#include <cstdint>
 #include <glm/vec2.hpp>
 #include <vector>
 
@@ -25,8 +26,8 @@ int main() {
     };
 
     std::vector<Circle> circles;
-    circles.emplace_back(0.2, 0.2, 0.1);
-    circles.emplace_back(0.5, 0.5, 0.3);
+    circles.emplace_back(0.5, 0.5, 0.1);
+    circles.emplace_back(1.0, 1.0, 0.05);
 
     Sfml sf{WIN_WIDTH, WIN_HEIGHT};
 
@@ -35,7 +36,9 @@ int main() {
     Opengl gl{vertexShaderPath, fragmentShaderPath};
     gl.setupOpengl(vertices, indices);
     gl.shader.useProgram();
-    gl.shader.setVec2f("iResolution", WIN_HEIGHT, WIN_HEIGHT);
+    gl.shader.setVec2f("iResolution", WIN_WIDTH, WIN_HEIGHT);
+    gl.shader.setCircles(circles);
+    gl.shader.setInt("circleNum", circles.size());
 
     while (sf.window.isOpen()) {
         glClearColor(0.0f, 0.2f, 0.2f, 1.f);
