@@ -30,7 +30,6 @@ void main() {
                         break;
                 } else {}
         }
-        // line rendering:
 
         FragColor = vec4(color, 1.0);
 }

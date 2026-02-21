@@ -9,12 +9,16 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Window.hpp>
 
+#include "ray-manager.hpp"
+
 class Sfml {
 
 public:
     sf::Window window;
+    float aspectRatio;
 
-    Sfml(uint winWidth, uint winHeight) {
+    Sfml(uint winWidth, uint winHeight)
+        : aspectRatio(static_cast<float>(winWidth) / winHeight) {
         m_settings.antiAliasingLevel = 8;
         m_settings.majorVersion = 3;
         m_settings.minorVersion = 3;
@@ -25,7 +29,7 @@ public:
         window.setVerticalSyncEnabled(true);
         window.setSize(sf::Vector2u(winWidth, winHeight));
         window.setPosition(sf::Vector2i(winWidth * 3 / 4, winHeight / 8 - 20));
-        window.setMinimumSize(sf::Vector2u(400, 300));
+        window.setMinimumSize(sf::Vector2u(400, 400));
         bool isWindowActive = window.setActive(true);
         window.setFramerateLimit(120); // Call this once after creating your window
 
@@ -34,6 +38,8 @@ public:
             SunnyLog::log("Error during gladLoadGl");
         }
     }
+
+    void onMouseClick(sf::Vector2f origin, float lightRadius, RayManager& rayManager);
 
 private:
     sf::ContextSettings m_settings;

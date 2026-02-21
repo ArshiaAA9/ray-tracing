@@ -1,12 +1,13 @@
 #pragma once
+#include <SFML/System/Vector2.hpp>
 #include <glm/glm.hpp>
 
 struct Circle {
 public:
-    glm::vec2 position;
+    sf::Vector2f position;
     float radius;
 
-    Circle(glm::vec2 position, float r)
+    Circle(sf::Vector2f position, float r)
         : position(position)
         , radius(r) {}
 
