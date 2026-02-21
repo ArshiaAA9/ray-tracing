@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 
-#include "circle.hpp"
 #include "glm/ext/vector_float2.hpp"
+#include "types.hpp"
 
 class Shader {
 public:
@@ -35,7 +35,7 @@ public:
             fragmentShaderFile.close();
             fragmentCode = fragmentShaderStream.str();
         } catch (std::ifstream::failure e) {
-            SunnyLog::log("Failed to read shaders", e.what());
+            SunnyLog::log("Failed to read shaders ", e.what());
         }
 
         // compile shaders:
@@ -113,6 +113,16 @@ public:
             std::cout << "Uniform '" << name << "' found at location " << loc << std::endl;
         }
         glUniform2f(loc, value1, value2);
+    }
+
+    inline void setVec3f(const std::string& name, float value1, float value2, float value3) const {
+        GLint loc = glGetUniformLocation(m_program, name.c_str());
+        if (loc == -1) {
+            std::cout << "ERROR: Uniform '" << name << "' not found!" << std::endl;
+        } else {
+            std::cout << "Uniform '" << name << "' found at location " << loc << std::endl;
+        }
+        glUniform3f(loc, value1, value2, value3);
     }
 
     inline void setCircles(std::vector<Circle>& circles) {

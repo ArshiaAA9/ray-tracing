@@ -10,11 +10,10 @@ uniform vec2 iResolution;
 uniform circle circles[2];
 uniform int circleNum;
 
-in vec3 fragColor;
-
 void main() {
-        vec3 color = fragColor;
+        // Circle rendering:
 
+        vec3 color;
         // Normalized pixel coordinates (from 0 to 1)
         vec2 uv = (gl_FragCoord.xy / iResolution);
         float aspect = iResolution.x / iResolution.y;
@@ -31,5 +30,7 @@ void main() {
                         break;
                 } else {}
         }
+        // line rendering:
+
         FragColor = vec4(color, 1.0);
 }

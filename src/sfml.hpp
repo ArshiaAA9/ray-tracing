@@ -1,3 +1,4 @@
+#pragma once
 #include <SunnyLog/SunnyLog.h>
 #include <glad/glad.h>
 
