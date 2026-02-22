@@ -67,6 +67,8 @@ int main() {
         }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
             sf.onMouseClick(sf::Vector2f{position1.x, position1.y}, lightRadius, rayManager);
+            // TODO: after updating vertex i need to move them to the shader again
+            // same for the circle
         }
 
         glClearColor(1.0f, 1.0f, 1.f, 1.f);
