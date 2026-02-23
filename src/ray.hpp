@@ -5,11 +5,23 @@
 struct Ray {
     float slope;
     sf::Vector2f direction;
+
+    // for future if we ever decided to implement light bounces
     sf::Vector2f hitPoint;
-    float distance;
 
     Ray(float angle)
         : slope(glm::tan(angle))
         , direction(glm::cos(angle), glm::sin(angle))
-        , distance(2.f) {}
+        , m_distance(2.f) {}
+
+    inline void setDistance(float distance) {
+        if (distance < m_distance) m_distance = distance;
+    }
+
+    inline void resetDistance() { m_distance = 2.0f; }
+
+    inline float getDistance() const { return m_distance; }
+
+private:
+    float m_distance;
 };

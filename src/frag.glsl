@@ -7,7 +7,7 @@ struct circle {
 };
 
 uniform vec2 iResolution;
-uniform circle circles[2];
+uniform circle circles[4];
 uniform int circleNum;
 
 void main() {

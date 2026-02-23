@@ -26,17 +26,18 @@ void RayManager::updateRayVertices(const sf::Vector2f newOrigin, const float asp
     // use aspect-corrected space for calculations
     uvStart.x *= aspectRatio;
     m_rayVertices.clear();
-    for (const auto& ray : m_rays) {
+    for (auto& ray : m_rays) {
 
         m_rayVertices.emplace_back(newOrigin.x);
         m_rayVertices.emplace_back(newOrigin.y);
 
         // /
-        sf::Vector2f end = uvStart + ray.direction * ray.distance;
+        sf::Vector2f end = uvStart + ray.direction * ray.getDistance();
         // get out of uv space
         end.x /= aspectRatio;
         m_rayVertices.emplace_back(end.x);
         m_rayVertices.emplace_back(end.y);
+        ray.resetDistance();
     }
 
     updateRayOrigin(newOrigin);
@@ -74,20 +75,20 @@ std::optional<sf::Vector2f> RayManager::findIntersection(const Circle& circle, R
     // Circle: |P - C|^2 = r^2
     // NOTE: the function assumes uv space coordinates
 
+    sf::Vector2f correctedCirclePos = circle.position;
+    correctedCirclePos.x *= aspectRatio;
+
     auto correctedOrigin = sf::Vector2f{m_rayOrigin.x * aspectRatio, m_rayOrigin.y};
 
     // oc: vector from center of circle to rayOrigin
-    sf::Vector2f oc = correctedOrigin - circle.position;
+    sf::Vector2f oc = correctedOrigin - correctedCirclePos;
 
     float a = dot(ray.direction, ray.direction);
     float b = 2.0f * dot(oc, ray.direction);
     float c = dot(oc, oc) - circle.radius * circle.radius;
 
     float disc = b * b - 4.0f * a * c;
-    if (disc < 0.0f) {
-        ray.distance = 2;
-        return std::nullopt;
-    }
+    if (disc < 0.0f) return std::nullopt;
 
     float sqrtDisc = std::sqrt(disc);
     float t1 = (-b - sqrtDisc) / (2.0f * a);
@@ -100,17 +101,18 @@ std::optional<sf::Vector2f> RayManager::findIntersection(const Circle& circle, R
 
     if (t < 0.0f) return std::nullopt;
 
-    ray.distance = t;
+    ray.setDistance(t);
     sf::Vector2f res = m_rayOrigin + t * ray.direction;
     res.x /= aspectRatio;
     return res;
 }
 
 void RayManager::checkForIntersectionAndUpdate(float aspectRatio) {
-    Circle correctedCircle = m_circlesUniform[1];
-    correctedCircle.position.x *= aspectRatio;
     for (auto& ray : m_rays) {
-        findIntersection(correctedCircle, ray, aspectRatio);
-        updateRayVertices(m_rayOrigin, aspectRatio);
+        for (const auto& circle : m_circlesUniform) {
+            if (circle.position == m_rayOrigin) continue;
+            findIntersection(circle, ray, aspectRatio);
+        }
     }
+    updateRayVertices(m_rayOrigin, aspectRatio);
 }

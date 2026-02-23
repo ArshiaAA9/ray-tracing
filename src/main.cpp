@@ -31,13 +31,17 @@ int main() {
 
     sf::Vector2f position1 = {0.2, 0.5};
     float lightRadius = 0.04;
-    sf::Vector2f position2 = {0.7, 0.6};
+    sf::Vector2f position2 = {0.7, 0.3};
+    sf::Vector2f position3 = {0.2, 0.6};
+    sf::Vector2f position4 = {0.3, 0.1};
     std::vector<Circle> circles;
 
     circles.emplace_back(position1, lightRadius);
-    circles.emplace_back(position2, 0.15);
+    circles.emplace_back(position2, 0.08);
+    circles.emplace_back(position3, 0.08);
+    circles.emplace_back(position4, 0.08);
 
-    unsigned int rayAmount = 360;
+    unsigned int rayAmount = 1000;
 
     const std::string vertexShaderPath = "../src/vertex.glsl";
     const std::string fragmentShaderPath = "../src/frag.glsl";
@@ -62,7 +66,7 @@ int main() {
         }
         rayManager.checkForIntersectionAndUpdate(sf.aspectRatio);
 
-        glClearColor(0.f, 1.0f, 1.0f, 1.f);
+        glClearColor(0.f, 0.0f, 0.0f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         gl.shader.useProgram();
         gl.draw();
