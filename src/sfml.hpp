@@ -24,7 +24,7 @@ public:
         m_settings.minorVersion = 3;
         m_settings.attributeFlags = sf::ContextSettings::Core;
 
-        window = sf::Window(sf::VideoMode({winWidth, winHeight}), "raytracing", sf::State::Windowed, m_settings);
+        window = sf::Window(sf::VideoMode({winWidth, winHeight}), "raytracing", sf::State::Fullscreen, m_settings);
 
         window.setVerticalSyncEnabled(true);
         window.setSize(sf::Vector2u(winWidth, winHeight));

@@ -11,8 +11,8 @@
 #include "sfml.hpp"
 #include "shader.hpp"
 
-#define WIN_WIDTH 1280
-#define WIN_HEIGHT 720
+#define WIN_WIDTH 1920
+#define WIN_HEIGHT 1080
 
 int main() {
     std::vector<float> vertices = {
@@ -61,8 +61,9 @@ int main() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q)) {
             sf.window.close();
         }
+
+        sf.onMouseClick(lightRadius, rayManager);
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-            sf.onMouseClick(lightRadius, rayManager);
         }
         rayManager.checkForIntersectionAndUpdate(sf.aspectRatio);
 
