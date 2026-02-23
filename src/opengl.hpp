@@ -10,8 +10,10 @@ public:
     Opengl(const std::string& vertexShaderPath, const std::string& fragShaderPath)
         : shader(vertexShaderPath, fragShaderPath) {}
 
-    void setupOpengl(std::vector<float>& vertices, std::vector<uint>& indices);
-    void setupVAOVBO(std::vector<float>& vertices, unsigned int& VAO, unsigned int& VBO);
+    ~Opengl() { deleteEverything(); }
+
+    void setupOpengl(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+    void setupVAOVBO(const std::vector<float>& vertices, unsigned int& VAO, unsigned int& VBO);
 
     inline void draw() {
         glBindVertexArray(m_VAO);

@@ -39,7 +39,7 @@ public:
         }
     }
 
-    void onMouseClick(sf::Vector2f origin, float lightRadius, RayManager& rayManager);
+    void onMouseClick(float lightRadius, RayManager& rayManager);
 
 private:
     sf::ContextSettings m_settings;

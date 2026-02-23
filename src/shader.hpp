@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 
-#include "glm/ext/vector_float2.hpp"
 #include "types.hpp"
 
 class Shader {
@@ -109,8 +108,6 @@ public:
         GLint loc = glGetUniformLocation(m_program, name.c_str());
         if (loc == -1) {
             std::cout << "ERROR: Uniform '" << name << "' not found!" << std::endl;
-        } else {
-            std::cout << "Uniform '" << name << "' found at location " << loc << std::endl;
         }
         glUniform2f(loc, value1, value2);
     }
@@ -119,8 +116,6 @@ public:
         GLint loc = glGetUniformLocation(m_program, name.c_str());
         if (loc == -1) {
             std::cout << "ERROR: Uniform '" << name << "' not found!" << std::endl;
-        } else {
-            std::cout << "Uniform '" << name << "' found at location " << loc << std::endl;
         }
         glUniform3f(loc, value1, value2, value3);
     }

@@ -1,18 +1,26 @@
 #include "sfml.hpp"
 
 #include <SFML/System/Vector2.hpp>
+#include <iostream>
 
 #include "ray-manager.hpp"
 
-void Sfml::onMouseClick(sf::Vector2f origin, float lightRadius, RayManager& rayManager) {
-    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    float uvX = static_cast<float>(mousePos.x) / window.getSize().x;
-    float uvY = 1.0f - static_cast<float>(mousePos.y) / window.getSize().y;
+void Sfml::onMouseClick(float lightRadius, RayManager& rayManager) {
+    sf::Vector2f mousePos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
+    float uvX = mousePos.x / window.getSize().x;
+    float uvY = 1.0f - mousePos.y / window.getSize().y;
+    sf::Vector2f mouseUV = {uvX, uvY};
+    sf::Vector2f mouseCorrected = {uvX * aspectRatio, uvY};
 
-    sf::Vector2f mouseUV = {uvX * aspectRatio, uvY};
-    mouseUV -= sf::Vector2f(origin.x * aspectRatio, origin.y);
+    const sf::Vector2f& rayOrigin = rayManager.getRayOrigin();
+    sf::Vector2f rayOriginCorrected = {rayOrigin.x * aspectRatio, rayOrigin.y};
 
-    if (mouseUV.lengthSquared() <= lightRadius * lightRadius) {
+    // calculations must be done in aspect-corrected space
+    sf::Vector2f diff = mouseCorrected - rayOriginCorrected;
+
+    // this check is faling
+    if (diff.lengthSquared() <= lightRadius * lightRadius) {
+        // but the vertices expect uv space coord
         rayManager.updateRayVertices(mouseUV, aspectRatio);
     }
 }
