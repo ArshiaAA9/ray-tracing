@@ -4,6 +4,10 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Window.hpp>
 #include <glm/vec2.hpp>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <string_view>
 #include <vector>
 
 #include "opengl.hpp"
@@ -11,10 +15,69 @@
 #include "sfml.hpp"
 #include "shader.hpp"
 
-#define WIN_WIDTH 1920
-#define WIN_HEIGHT 1080
+const unsigned int WIN_WIDTH = 1920;
+const unsigned int WIN_HEIGHT = 1080;
+const unsigned int DEFAULT_RAY_AMOUNT = 500;
 
-int main() {
+void printHelp() {
+    std::cout << R"(Usage: ./bin -r <number>
+       ./bin --rayamount <number>
+
+Set the ray amount for the operation.
+
+Options:
+  -r <number>          Short form for ray amount.
+  --rayamount <number> Long form for ray amount.
+  -h, --help           Show this help message and exit.
+
+Examples:
+  ./bin -r 1000
+  ./bin --rayamount 1000
+
+Note: Use either -r OR --rayamount, not both.)"
+              << '\n';
+}
+
+int main(int argc, char* argv[]) {
+    unsigned int rayAmount = DEFAULT_RAY_AMOUNT;
+
+    for (int i = 1; i < argc; i++) {
+        std::string_view arg = argv[i];
+        if (arg == "-h" || arg == "--help") {
+            printHelp();
+            return 0;
+        }
+    }
+
+    // We require exactly 3 arguments: program, flag, and value
+    if (argc >= 3) {
+        std::string_view flag = argv[1];
+
+        if (flag != "-r" && flag != "--rayamount") {
+            std::cerr << "Error: unknown flag '" << flag << "'.\n";
+            printHelp();
+            return EXIT_FAILURE;
+        }
+
+        try {
+            int temp = std::stoi(argv[2]);
+            if (temp < 1) {
+                std::cerr << "Error: ray amount must be positive.\n";
+                printHelp();
+                return EXIT_FAILURE;
+            }
+            rayAmount = static_cast<unsigned int>(temp);
+        } catch (const std::invalid_argument&) {
+            std::cerr << "Error: '" << argv[2] << "' is not a number.\n";
+            printHelp();
+            return EXIT_FAILURE;
+        } catch (const std::out_of_range&) {
+            std::cerr << "Error: number is too large.\n";
+            printHelp();
+            return EXIT_FAILURE;
+        }
+    }
+
     std::vector<float> vertices = {
         // positions
         -1.0f, 1.0f,  // top-left
@@ -40,8 +103,6 @@ int main() {
     circles.emplace_back(position2, 0.08);
     circles.emplace_back(position3, 0.08);
     circles.emplace_back(position4, 0.08);
-
-    unsigned int rayAmount = 1000;
 
     const std::string vertexShaderPath = "../src/vertex.glsl";
     const std::string fragmentShaderPath = "../src/frag.glsl";
