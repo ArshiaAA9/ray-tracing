@@ -14,7 +14,7 @@ find_package(OpenGL REQUIRED)
 add_library(glad include/glad/src/glad.c)
 target_include_directories(glad PUBLIC include/glad/include)
 
-# imgui: 
+# imgui:
 message(STATUS "Fetching ImGui from GitHub (this may take a while)...")
 include(FetchContent)
 FetchContent_Declare(
@@ -46,11 +46,11 @@ set(BUILD_SHARED_LIBS OFF)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${SOURCE_DIR}/*.cpp" "${SOURCE_DIR}/*.c")
 
-add_executable(bin 
+add_executable(simulation
     ${SOURCES}
 )
 
-target_link_libraries(bin PRIVATE
+target_link_libraries(simulation PRIVATE
     ImGui-SFML::ImGui-SFML
     glad
     OpenGL::GL
@@ -61,7 +61,7 @@ target_link_libraries(bin PRIVATE
     SFML::Audio
 )
 
-target_include_directories(bin PRIVATE
-    ${SOURCE_DIR} 
+target_include_directories(simulation PRIVATE
+    ${SOURCE_DIR}
     include
 )
