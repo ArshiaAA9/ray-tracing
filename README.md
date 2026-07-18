@@ -18,5 +18,9 @@ cmake --build build
 Running the simulation:
 ```
 cd build
-./sudotu
+./simulation 
+```
+You can also use -r or --rayamount to set different amount of rays.
+```
+./simulation -r 100
 ```
